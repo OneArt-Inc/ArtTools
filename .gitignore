@@ -1,3 +1,10 @@
+# Expo
+.expo
+.expo-shared
+
+#yarn
+yarn.lock
+
 # Logs
 logs
 *.log
