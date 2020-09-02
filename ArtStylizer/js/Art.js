@@ -39,13 +39,15 @@ class Art extends Component {
       if (!result.cancelled) {
         this.setState({
           image: result.uri,
+          width: result.width,
+          height: result.height
         });
       }
     } catch (E) {}
   };
 
   render() {
-    let { image } = this.state;
+    let { image, width, height } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {image && (
@@ -70,7 +72,7 @@ class Art extends Component {
               if (this.state.image) {
                 this.props.navigation.navigate("Result", {
                   content: this.props.route.params.content,
-                  art: this.state.image,
+                  art: { uri: image, width: width, height: height}
                 });
               } else {
                 Alert.alert("Please select an art style.");

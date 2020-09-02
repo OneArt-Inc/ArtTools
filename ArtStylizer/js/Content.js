@@ -39,13 +39,15 @@ class Content extends Component {
       if (!result.cancelled) {
         this.setState({
           image: result.uri,
+          width: result.width,
+          height: result.height
         });
       }
     } catch (E) {}
   };
 
   render() {
-    let { image } = this.state;
+    let { image, width, height } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {image && (
@@ -68,7 +70,7 @@ class Content extends Component {
             title="Next"
             onPress={() => {
               if (this.state.image) {
-                this.props.navigation.navigate("Art", { content: image });
+                this.props.navigation.navigate("Art", { content: {uri: image, width:width, height:height} });
               } else {
                 Alert.alert("Please select a content first.");
               }
