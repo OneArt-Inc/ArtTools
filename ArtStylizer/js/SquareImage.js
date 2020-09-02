@@ -1,15 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  SafeAreaView,
-  Image,
-} from "react-native";
+import { Image } from "react-native";
 
-export class ResizedImage extends Component {
+export default class SquareImage extends Component {
   getWidthHeightFitInArea = (
     originalWidth,
     originalHeight,

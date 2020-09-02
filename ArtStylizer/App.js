@@ -1,13 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  SafeAreaView,
-} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Content from './js/Content.js'
@@ -27,16 +20,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  bottomButtons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    justifyContent: "flex-end",
-  },
-});

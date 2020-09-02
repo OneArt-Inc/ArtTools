@@ -7,11 +7,13 @@ class Result extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.bottomButtons}>
-          <Button title="Reselect" onPress={() => {this.props.navigation.navigate("Content")}} />
           <Button
-            title="Save"
-            onPress={() =>{} }
+            title="Reselect"
+            onPress={() => {
+              this.props.navigation.navigate("Content");
+            }}
           />
+          <Button title="Save" onPress={() => {}} />
         </View>
       </SafeAreaView>
     );
