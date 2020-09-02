@@ -66,5 +66,5 @@ export async function tensorToImageUrl(imageTensor) {
   };
   const jpegImageData = jpeg.encode(rawImageData, 75);
   const base64Encoding = tf.util.decodeString(jpegImageData.data, "base64");
-  return toDataUri(base64Encoding);
+  return base64Encoding;
 }

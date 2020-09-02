@@ -21,34 +21,29 @@ import {
 } from "./Util.js";
 
 const BACKEND_TO_USE = "rn-webgl";
-const  STYLENET_URL =
-    "https://cdn.jsdelivr.net/gh/reiinakano/arbitrary-image-stylization-tfjs@master/saved_model_style_js/model.json";
-const  TRANSFORMNET_URL =
-    "https://cdn.jsdelivr.net/gh/reiinakano/arbitrary-image-stylization-tfjs@master/saved_model_transformer_separable_js/model.json";
+const STYLENET_URL =
+  "https://cdn.jsdelivr.net/gh/reiinakano/arbitrary-image-stylization-tfjs@master/saved_model_style_js/model.json";
+const TRANSFORMNET_URL =
+  "https://cdn.jsdelivr.net/gh/reiinakano/arbitrary-image-stylization-tfjs@master/saved_model_transformer_separable_js/model.json";
 class Result extends Component {
-
   styleNet = null;
   transformNet = null;
 
-async init() {
+  async init() {
     await Promise.all([this.loadStyleModel(), this.loadTransformerModel()]);
   }
 
   async loadStyleModel() {
     if (this.styleNet == null) {
       this.styleNet = await tf.loadGraphModel(STYLENET_URL);
-      console.log('stylenet loaded');
     }
   }
 
   async loadTransformerModel() {
     if (this.transformNet == null) {
       this.transformNet = await tf.loadGraphModel(TRANSFORMNET_URL);
-      console.log('transformnet loaded');
     }
   }
-
-
 
   constructor(props) {
     super(props);
@@ -82,17 +77,17 @@ async init() {
 
   stylizeTensors = (content, style, strength) => {
     // return new Promise((resolve, reject) => {
-      let styleRepresentation = this.predictStyleParameters(style);
-      if (strength !== undefined) {
-        styleRepresentation = styleRepresentation
-          .mul(tf.scalar(strength))
-          .add(
-            this.predictStyleParameters(content).mul(tf.scalar(1.0 - strength))
-          );
-      }
-      const stylized = this.produceStylized(content, styleRepresentation);
-      tf.dispose([styleRepresentation]);
-      return stylized;
+    let styleRepresentation = this.predictStyleParameters(style);
+    if (strength !== undefined) {
+      styleRepresentation = styleRepresentation
+        .mul(tf.scalar(strength))
+        .add(
+          this.predictStyleParameters(content).mul(tf.scalar(1.0 - strength))
+        );
+    }
+    const stylized = this.produceStylized(content, styleRepresentation);
+    tf.dispose([styleRepresentation]);
+    return stylized;
     // });
   };
 
@@ -109,13 +104,12 @@ async init() {
     // Wait for tf to be ready.
     await tf.setBackend(BACKEND_TO_USE);
     await tf.ready();
-    await this.init()
+    await this.init();
     resizedContent = await resizeImage(
       this.props.route.params.content.uri,
       200
     );
     resizedArt = await resizeImage(this.props.route.params.art.uri, 200);
-
     this.stylize(resizedContent.base64, resizedArt.base64).then((image) => {
       this.setState({ image: image });
     });
@@ -126,8 +120,16 @@ async init() {
       <SafeAreaView style={styles.container}>
         {this.state.image && (
           <View style={styles.centerImage}>
-          <Text>Ready</Text>
-            <Image source={{ uri: image }} />
+            <Image
+              style={{
+                flex: 1,
+                alignSelf: "stretch",
+                height: undefined,
+                width: undefined,
+              }}
+              resizeMode="contain"
+              source={{ uri: toDataUri(image) }}
+            />
           </View>
         )}
 
