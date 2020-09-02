@@ -40,7 +40,7 @@ class Content extends Component {
         this.setState({
           image: result.uri,
           width: result.width,
-          height: result.height
+          height: result.height,
         });
       }
     } catch (E) {}
@@ -70,7 +70,9 @@ class Content extends Component {
             title="Next"
             onPress={() => {
               if (this.state.image) {
-                this.props.navigation.navigate("Art", { content: {uri: image, width:width, height:height} });
+                this.props.navigation.navigate("Art", {
+                  content: { uri: image, width: width, height: height },
+                });
               } else {
                 Alert.alert("Please select a content first.");
               }

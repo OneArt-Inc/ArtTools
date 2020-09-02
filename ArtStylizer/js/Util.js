@@ -1,35 +1,39 @@
-import * as tf from '@tensorflow/tfjs';
-import * as ImageManipulator from 'expo-image-manipulator';
-import * as jpeg from 'jpeg-js';
+import * as tf from "@tensorflow/tfjs";
+import * as ImageManipulator from "expo-image-manipulator";
+import * as jpeg from "jpeg-js";
 
 export function toDataUri(base64) {
   return `data:image/jpeg;base64,${base64}`;
 }
 
-export async function resizeImage(
-    imageUrl, width) {
-  const actions = [{
-    resize: {
-      width,
+export async function resizeImage(imageUrl, width) {
+  const actions = [
+    {
+      resize: {
+        width,
+      },
     },
-  }];
+  ];
   const saveOptions = {
     compress: 0.75,
     format: ImageManipulator.SaveFormat.JPEG,
     base64: true,
   };
-  const res =
-      await ImageManipulator.manipulateAsync(imageUrl, actions, saveOptions);
+  const res = await ImageManipulator.manipulateAsync(
+    imageUrl,
+    actions,
+    saveOptions
+  );
   return res;
 }
 
-export async function base64ImageToTensor(base64){
-  const rawImageData = tf.util.encodeString(base64, 'base64');
+export async function base64ImageToTensor(base64) {
+  const rawImageData = tf.util.encodeString(base64, "base64");
   const TO_UINT8ARRAY = true;
-  const {width, height, data} = jpeg.decode(rawImageData, TO_UINT8ARRAY);
+  const { width, height, data } = jpeg.decode(rawImageData, TO_UINT8ARRAY);
   // Drop the alpha channel info
   const buffer = new Uint8Array(width * height * 3);
-  let offset = 0;  // offset into original data
+  let offset = 0; // offset into original data
   for (let i = 0; i < buffer.length; i += 3) {
     buffer[i] = data[offset];
     buffer[i + 1] = data[offset + 1];
@@ -50,7 +54,7 @@ export async function tensorToImageUrl(imageTensor) {
     frameData[i] = buffer[offset];
     frameData[i + 1] = buffer[offset + 1];
     frameData[i + 2] = buffer[offset + 2];
-    frameData[i + 3] = 0xFF;
+    frameData[i + 3] = 0xff;
 
     offset += 3;
   }
@@ -61,6 +65,6 @@ export async function tensorToImageUrl(imageTensor) {
     height,
   };
   const jpegImageData = jpeg.encode(rawImageData, 75);
-  const base64Encoding = tf.util.decodeString(jpegImageData.data, 'base64');
-  return base64Encoding;
+  const base64Encoding = tf.util.decodeString(jpegImageData.data, "base64");
+  return toDataUri(base64Encoding);
 }
