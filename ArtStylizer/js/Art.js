@@ -6,12 +6,13 @@ import {
   Button,
   SafeAreaView,
   Dimensions,
+  Alert,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
-import SquareImage from "./SquareImage.js";
 
 class Art extends Component {
   constructor(props) {
@@ -53,12 +54,15 @@ class Art extends Component {
       <SafeAreaView style={styles.container}>
         {image && (
           <View style={styles.centerImage}>
-            <SquareImage
+            <Image
               source={{ uri: image }}
-              width={width}
-              height={height}
-              containerWidth={this.state.containerSize}
-              containerHeight={this.state.containerSize}
+              style={{
+                flex: 1,
+                alignSelf: "stretch",
+                height: undefined,
+                width: undefined,
+              }}
+              resizeMode="contain"
             />
           </View>
         )}
@@ -66,7 +70,13 @@ class Art extends Component {
           <Button title="Select" onPress={this.pickImage} />
           <Button
             title="Next"
-            onPress={() => this.props.navigation.navigate("Result")}
+            onPress={() => {
+              if (this.state.image) {
+                this.props.navigation.navigate("Result");
+              } else {
+                Alert.alert("Please select an art style.");
+              }
+            }}
           />
         </View>
       </SafeAreaView>
@@ -81,6 +91,7 @@ export default function (props) {
 
 const styles = StyleSheet.create({
   centerImage: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
