@@ -6,7 +6,6 @@ import {
   Button,
   SafeAreaView,
   Image,
-  Dimensions,
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -19,7 +18,6 @@ class Content extends Component {
     super(props);
     this.state = {
       image: null,
-      containerSize: Math.round(Dimensions.get("window").width),
     };
   }
 
@@ -41,15 +39,13 @@ class Content extends Component {
       if (!result.cancelled) {
         this.setState({
           image: result.uri,
-          width: result.width,
-          height: result.height,
         });
       }
     } catch (E) {}
   };
 
   render() {
-    let { image, width, height } = this.state;
+    let { image } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {image && (
@@ -72,7 +68,7 @@ class Content extends Component {
             title="Next"
             onPress={() => {
               if (this.state.image) {
-                this.props.navigation.navigate("Art");
+                this.props.navigation.navigate("Art", { content: image });
               } else {
                 Alert.alert("Please select a content first.");
               }

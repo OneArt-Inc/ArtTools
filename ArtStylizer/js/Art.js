@@ -5,7 +5,6 @@ import {
   View,
   Button,
   SafeAreaView,
-  Dimensions,
   Alert,
   Image,
 } from "react-native";
@@ -19,7 +18,6 @@ class Art extends Component {
     super(props);
     this.state = {
       image: null,
-      containerSize: Math.round(Dimensions.get("window").width),
     };
   }
 
@@ -41,15 +39,13 @@ class Art extends Component {
       if (!result.cancelled) {
         this.setState({
           image: result.uri,
-          width: result.width,
-          height: result.height,
         });
       }
     } catch (E) {}
   };
 
   render() {
-    let { image, width, height } = this.state;
+    let { image } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {image && (
@@ -72,7 +68,10 @@ class Art extends Component {
             title="Next"
             onPress={() => {
               if (this.state.image) {
-                this.props.navigation.navigate("Result");
+                this.props.navigation.navigate("Result", {
+                  content: this.props.route.params.content,
+                  art: this.state.image,
+                });
               } else {
                 Alert.alert("Please select an art style.");
               }
